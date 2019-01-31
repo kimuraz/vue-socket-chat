@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Login v-if="!$store.getters['getUser']"/>
+    <div v-else class="room-holder">
+      <ChatRoom/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import ChatRoom from './components/ChatRoom';
+import Login from './components/Login';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
-  }
+    ChatRoom,
+    Login
+  },
+  created() {
+    const user = localStorage.getItem('user');
+    const avatar = localStorage.getItem('avatar');
+    user && this.$store.commit('setUser', user);
+    avatar && this.$store.commit('setAvatar', avatar);
+  },
 };
 </script>
 
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="sass">
+html, body
+  margin: 0
+  padding: 0
+  height: 100vh
+  width: 100vw
+  overflow: hidden
+
+input
+  font-size: .875rem
+  outline: 0
+  padding: 0 5px
+  border-radius: 4px
+  color: #363636
+  border: 2px solid #363636
+#app
+  font-family: "Avenir", Helvetica, Arial, sans-serif
+  display: flex
+  height: 100%
+  .room-holder
+    padding: 10px 30px
+    height: 100%
+    width: 100vw
 </style>
