@@ -1,9 +1,14 @@
 <template>
   <li class="message">
     <header class="header">
-      <img :src="msg.avatar || 'https://cdn1.iconfinder.com/data/icons/people-avatars-10/24/people_avatar_head_harry_potter_mage_magic-512.png'"/>
+      <img
+        :src="
+          msg.avatar ||
+            'https://cdn1.iconfinder.com/data/icons/people-avatars-10/24/people_avatar_head_harry_potter_mage_magic-512.png'
+        "
+      />
       <b>{{ msg.author }}</b>
-      <p> {{ msg.datetime }}</p>
+      <p>{{ msg.datetime }}</p>
     </header>
     <main>
       <p>{{ msg.text }}</p>
@@ -13,7 +18,7 @@
 
 <script>
 export default {
-  name: 'message',
+  name: "message",
   props: {
     msg: {
       type: Object,
@@ -43,5 +48,4 @@ export default {
       border-radius: 2px
       padding: 2px
       background-color: #F0F0F0
-
 </style>

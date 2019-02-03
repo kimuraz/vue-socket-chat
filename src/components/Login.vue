@@ -2,15 +2,15 @@
   <div class="login-bg">
     <div class="login-card">
       <label>Nickname</label>
-      <br/>
-      <input v-model="user" type="text"/>
-      <br/>
+      <br />
+      <input v-model="user" type="text" />
+      <br />
       <label>Avatar URL</label>
-      <br/>
-      <input v-model="avatar" type="text"/>
-      <br/>
-      <input type="checkbox" v-model="remember"/> Remember me
-      <br/>
+      <br />
+      <input v-model="avatar" type="text" />
+      <br />
+      <input type="checkbox" v-model="remember" /> Remember me
+      <br />
       <button @click="save">Save</button>
     </div>
   </div>
@@ -18,28 +18,28 @@
 
 <script>
 export default {
-  name: 'login',
+  name: "login",
   data() {
     return {
-      user: '',
-      avatar: '',
-      remember: true,
+      user: "",
+      avatar: "",
+      remember: true
     };
   },
   methods: {
     save() {
       if (!this.user) {
-        alert('Fill up your nickname!');
+        alert("Fill up your nickname!");
         return;
       }
-      this.$store.commit('setUser', this.user);
-      this.$store.commit('setAvatar', this.avatar);
+      this.$store.commit("setUser", this.user);
+      this.$store.commit("setAvatar", this.avatar);
       if (this.remember) {
-        localStorage.setItem('user', this.user);
-        localStorage.setItem('avatar', this.avatar);
+        localStorage.setItem("user", this.user);
+        localStorage.setItem("avatar", this.avatar);
       }
     }
-  },
+  }
 };
 </script>
 

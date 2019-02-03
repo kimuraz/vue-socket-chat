@@ -2,43 +2,54 @@
   <div class="chat-room">
     <main>
       <ul class="message-list" ref="list">
-        <Message v-for="msg in messages" :msg="msg"/>
+        <Message v-for="(msg, idx) in messages" :msg="msg" :key="idx"/>
       </ul>
     </main>
 
     <footer>
-      <input @keyup.enter="send" v-model="msgText" placeholder="Type your message..."/>
+      <input
+        @keyup.enter="send"
+        v-model="msgText"
+        placeholder="Type your message..."
+      />
     </footer>
   </div>
 </template>
 
 <script>
-import io from 'socket.io-client';
-import Message from './Message';
+import io from "socket.io-client";
+import Message from "./Message";
 
 export default {
   data() {
     return {
       io: null,
       messages: [],
-      msgText: '',
+      msgText: ""
     };
   },
   components: {
     Message
   },
   created() {
-    this.io = io('http://localhost:3000');
-    this.io.emit('user', { user: this.$store.getters['getUser'] });
-    this.io.on('msg', msg => {
+    this.io = io("http://192.168.0.12:3000");
+    this.io.emit("user", { user: this.$store.getters["getUser"] });
+    this.io.on("msg", msg => {
       this.messages.push(msg);
-      this.$refs.list.scrollTop = this.$refs.list.scrollHeight + 20;
+      this.$nextTick(() => {
+        this.$refs.list.scrollTop = this.$refs.list.scrollHeight;
+      });
     });
   },
   methods: {
     send() {
-      this.io.emit('msg', { author: this.$store.getters['getUser'], datetime: new Date(), text: this.msgText, avatar: this.$store.getters['getAvatar'] });
-      this.msgText = '';
+      this.io.emit("msg", {
+        author: this.$store.getters["getUser"],
+        datetime: new Date(),
+        text: this.msgText,
+        avatar: this.$store.getters["getAvatar"]
+      });
+      this.msgText = "";
     }
   }
 };

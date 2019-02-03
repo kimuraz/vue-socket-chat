@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <Login v-if="!$store.getters['getUser']"/>
+    <Login v-if="!$store.getters['getUser']" />
     <div v-else class="room-holder">
-      <ChatRoom/>
+      <ChatRoom />
     </div>
   </div>
 </template>
 
 <script>
-import ChatRoom from './components/ChatRoom';
-import Login from './components/Login';
+import ChatRoom from "./components/ChatRoom";
+import Login from "./components/Login";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     ChatRoom,
     Login
   },
   created() {
-    const user = localStorage.getItem('user');
-    const avatar = localStorage.getItem('avatar');
-    user && this.$store.commit('setUser', user);
-    avatar && this.$store.commit('setAvatar', avatar);
-  },
+    const user = localStorage.getItem("user");
+    const avatar = localStorage.getItem("avatar");
+    user && this.$store.commit("setUser", user);
+    avatar && this.$store.commit("setAvatar", avatar);
+  }
 };
 </script>
 
