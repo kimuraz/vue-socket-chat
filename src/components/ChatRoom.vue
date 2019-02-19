@@ -2,7 +2,7 @@
   <div class="chat-room">
     <main>
       <ul class="message-list" ref="list">
-        <Message v-for="(msg, idx) in messages" :msg="msg" :key="idx"/>
+        <Message v-for="(msg, idx) in messages" :msg="msg" :key="idx" />
       </ul>
     </main>
 
@@ -12,6 +12,13 @@
         v-model="msgText"
         placeholder="Type your message..."
       />
+
+      <EmojiPopup
+        :filter="filterEmoji"
+        v-show="showEmojis"
+        @emoji="replaceByEmoji"
+        @none="showEmojis = false"
+      />
     </footer>
   </div>
 </template>
@@ -19,17 +26,21 @@
 <script>
 import io from "socket.io-client";
 import Message from "./Message";
+import EmojiPopup from "./EmojiPopup";
 
 export default {
   data() {
     return {
       io: null,
       messages: [],
-      msgText: ""
+      msgText: "",
+      filterEmoji: "",
+      showEmojis: false
     };
   },
   components: {
-    Message
+    Message,
+    EmojiPopup
   },
   created() {
     this.io = io("http://192.168.0.12:3000");
@@ -50,6 +61,22 @@ export default {
         avatar: this.$store.getters["getAvatar"]
       });
       this.msgText = "";
+    },
+    replaceByEmoji(emoji) {
+      this.msgText = this.msgText.replace(/:\w+:?/g, emoji);
+    }
+  },
+  watch: {
+    msgText(val) {
+      const re = /:\w+:?/g;
+      const emojiMatch = re.exec(val);
+      if (emojiMatch) {
+        this.showEmojis = true;
+        this.filterEmoji = emojiMatch[0].replace(":", "");
+      } else {
+        this.showEmojis = false;
+        this.filterEmoji = "";
+      }
     }
   }
 };
@@ -76,6 +103,7 @@ export default {
     padding: 10px 0
     width: 100%
     display: flex
+    position: relative
     > input
       flex: 1
 </style>
